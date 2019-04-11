@@ -10,7 +10,8 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		long startTime = System.nanoTime();
 		
-		String datafile = "10P5R2V_java.txt";
+		String datafile = "10P5R2"
+				+ "V_java.txt";
 		
 		File file = new File ("8P5R1V_java_results.txt");
 		
@@ -22,14 +23,14 @@ public class Main {
 		}
 		
 		PrintWriter pw = new PrintWriter(file);	
-		Vector<Node> nodes = new Vector<Node>();
-		Vector<Node> depot = new Vector<Node>();
+	//	Vector<Node> nodes = new Vector<Node>();
+		Vector<Node> nodesWithoutDepot = new Vector<Node>();
 		Vector<Node> pickupNodes = new Vector<Node>();
 		Vector<Node> deliveryNodes = new Vector<Node>();
 		Vector<Node> startDepots = new Vector<Node>();
 		Vector<Vehicle> vehicles = new Vector<Vehicle>();
-		Vector<Route> routes = new Vector<Route>();
-		Vehicle vehicle = new Vehicle();
+	//	Vector<Route> routes = new Vector<Route>();
+	//	Vehicle vehicle = new Vehicle();
 		Vector<Float> dualVisitedPickupsCon = new Vector<Float>();  
 		Vector<Float> dualOneVisitCon = new Vector<Float>();
 		//Vector<Float> dualVisitedPickupsCon;
@@ -41,9 +42,10 @@ public class Main {
 		InstanceData inputdata = new InstanceData(datafile);
 		//PathBuilder builder = new PathBuilder(pickupNodes, deliveryNodes, nodes, depot,inputdata, pw, routes, vehicles);
 
-		InputReader.inputReader(datafile, nodes, inputdata, depot, pickupNodes, deliveryNodes, startDepots, vehicles);
+		InputReader.inputReader(datafile, inputdata, nodesWithoutDepot, pickupNodes, deliveryNodes, startDepots, vehicles);
+	//	System.out.println(inputdata.times[2][18]);
 
-		GurobiInterface solver = new GurobiInterface(inputdata, nodes, depot, deliveryNodes, pickupNodes, vehicles, dualVisitedPickupsCon, dualOneVisitCon, pw);
+		GurobiInterface solver = new GurobiInterface(inputdata, deliveryNodes,  pickupNodes, nodesWithoutDepot, vehicles, dualVisitedPickupsCon, dualOneVisitCon, pw);
 		solver.solveProblem();
 		//PathBuilder builder;
 		

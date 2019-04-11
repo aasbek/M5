@@ -1,14 +1,14 @@
-NumberOfVehicle , 2
+NumberOfVehicles , 4
 NodesVehiclek , 0,1,2,3,4,5,6,7,8,9,10,11,
 VolumeCap , 81
 WeightCap , 30 
-EarlyTimeWindow ,0.00,0.00,88.00,88.12,47.00,54.72,14.00,21.42,6.00,11.08,72.00,72.83,
-LateTimeWindow , 144.00,144.00,100.00,100.12,59.00,66.72,26.00,33.42,18.00,23.08,84.00,84.83,
-WeightLoad , 3,2,12,7,11,
-VolumeLoad , 10,5,27,22,25,
-PickupNodes , 27,15,4,5,4,
-DeliveryNodes , 21,7,23,45,18,
-StartDepot , 16, 34
+EarlyTimeWindow ,0.00,0.00,66.00,71.45,82.00,89.67,80.00,83.05,47.00,47.07,31.00,38.17,
+LateTimeWindow , 144.00,144.00,78.00,83.45,94.00,101.67,92.00,95.05,59.00,59.07,43.00,50.17,
+WeightLoad , 8,11,14,11,12,
+VolumeLoad , 14,17,28,16,31,
+PickupNodes , 3,19,39,9,46,
+DeliveryNodes , 16,17,11,39,4,
+StartDepots , 35,50,39,42,
 EndDepot , 51 
 NumberOfCities, 51 
 Times: 
@@ -115,7 +115,7 @@ Distances:
 126.451 , 539.68 , 767.736 , 339.361 , 117.45 , 64.755 , 250.575 , 297.841 , 461.483 , 474.51 , 605.194 , 728.987 , 582.184 , 662.55 , 740.494 , 387.689 , 90.762 , 263.786 , 651.58 , 640.338 , 640.64 , 605.194 , 670.764 , 567.697 , 521.799 , 487.401 , 568.317 , 458.152 , 297.841 , 563.39 , 307.274 , 283.176 , 156.703 , 301.181 , 178.429 , 584.897 , 681.633 , 492.475 , 385.426 , 210.532 , 255.299 , 697.992 , 303.079 , 394.573 , 475.461 , 622.27 , 712.13 , 741.481 , 0 , 671.712 , 0 , 
 632.73 , 386.917 , 415.248 , 509.861 , 557.52 , 618.31 , 520.2 , 449.072 , 313.711 , 241.981 , 253.451 , 376.499 , 429.421 , 264.793 , 342.738 , 285.786 , 578.468 , 430.559 , 299.092 , 259.723 , 293.166 , 253.451 , 206.518 , 324.254 , 289.464 , 334.638 , 324.874 , 210.888 , 449.072 , 108.046 , 364.75 , 423.209 , 544.898 , 471.681 , 528.962 , 411.608 , 329.144 , 281.236 , 384.382 , 463.161 , 417.025 , 107.894 , 492.396 , 309.619 , 266.45 , 81.19 , 151.663 , 340.392 , 669.017 , 0 , 0 , 
 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 
-FuelPrice , 14.84 
+FuelPrice , 15.04 
 FuelConsumptionEmptyTruckPerKm, 0.42
 FuelConsumptionPerTonPerKm, 0.01
  LabourCostPerHour, 469
@@ -125,9 +125,12 @@ TimeTonService, 0.1
  Revenue, 100
  
 
-!Freight order 1  has pickup in  Rennebu and delivery in  Tanem
-!Freight order 2  has pickup in Sistranda and delivery in  Kongsvinger
-!Freight order 3  has pickup in Beitostølen and delivery in  Vinjeøra
-!Freight order 4  has pickup in  Drammen and delivery in  Fossbergom
-!Freight order 5  has pickup in Beitostølen and delivery in Nesbyen
-!The vehicle has startdepot Vinstra
+!Freight order 1  has pickup in  Steinkjer and delivery in Vinstra
+!Freight order 2  has pickup in  Trondheim and delivery in  Kongsberg
+!Freight order 3  has pickup in  Koppang and delivery in  Meldal
+!Freight order 4  has pickup in  Alvdal and delivery in  Koppang
+!Freight order 5  has pickup in Molde and delivery in Beitostølen
+!Vehicle 1 has startdepot  Lillestrøm
+!Vehicle 2 has startdepot Ålesund
+!Vehicle 3 has startdepot  Koppang
+!Vehicle 4 has startdepot Geiranger

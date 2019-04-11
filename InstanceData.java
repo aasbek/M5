@@ -35,6 +35,8 @@ public class InstanceData {
 	public float getTime (Node i, Node j){
 	int iTime = i.location;
 	int jTime = j.location;
+//	System.out.println(iTime);
+//	System.out.println(jTime);
 	return times[iTime-1][jTime-1];
 	//System.out.println(time);
 	}

@@ -6,10 +6,11 @@ import java.util.Vector;
 
 
 public class PathBuilder {
-	public Vector<Node> nodes;
+	//public Vector<Node> nodes;
 	public Vector<Node> pickupNodes;
 	public Vector<Node> deliveryNodes;
-	public Vector<Node> depot;
+	public Vector<Node> nodesWithoutDepot;
+	//public Vector<Node> depot;
 	public Vector<Node> startDepots;
 	public Vector <Vehicle> vehicles;
 	//public Vector<Route> routes;
@@ -25,21 +26,21 @@ public class PathBuilder {
 	//int bestLabelNumber = 0;
 
 
-	public PathBuilder(Vector<Node> pickupNodes, Vector<Node> deliveryNodes, Vector<Node> nodes, Vector<Node> depot, InstanceData inputdata, PrintWriter pw, Vector<Vehicle> vehicles) {
-		this.nodes = nodes;
+	public PathBuilder(Vector<Node> pickupNodes, Vector<Node> deliveryNodes, InstanceData inputdata, PrintWriter pw, Vector<Vehicle> vehicles) {
+	//	this.nodes = nodes;
 		this.pickupNodes = pickupNodes;
 		this.deliveryNodes = deliveryNodes;
-		this.depot = depot;
+	//	this.depot = depot;
 		// this.routes = routes;
 		this.inputdata = inputdata;
 		this.pw = pw;
 		this.vehicles = vehicles;
 		numberOfDominatedLabels = 0;
 		
-		preprocess = new Preprocessing(pickupNodes, deliveryNodes, nodes, depot, inputdata);
-		preprocess.unreachableNodeCombination();
-		preprocess.unreachableDeliveryNode();
-		preprocess.unreachableDeliveryPairs();
+	//	preprocess = new Preprocessing(pickupNodes, deliveryNodes, vehicles, inputdata, nodesWithoutDepot);
+	//	preprocess.unreachableNodeCombination();
+	//	preprocess.unreachableDeliveryNode();
+	//	preprocess.unreachableDeliveryPairs();
 	}
 	
 	
@@ -221,7 +222,7 @@ public class PathBuilder {
 			}
 			
 			// Calculating the profit (revenue - costs) when a pickup node is visited 
-			L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, nodes)))
+			L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, L2.vehicle.nodes)))
 							- inputdata.fuelPrice*inputdata.fuelConsumptionEmptyTruckPerKm*inputdata.getDistance(L.node,node)
 							- inputdata.fuelPrice*inputdata.fuelConsumptionPerTonKm*L.weightCapacityUsed*inputdata.getDistance(L.node,node)
 							- inputdata.otherDistanceDependentCostsPerKm * inputdata.getDistance(L.node, node)
@@ -271,8 +272,8 @@ public class PathBuilder {
 			}
 			
 			// Remove the node's corresponding pickup node from the open nodes list when the delivery node i visited
-			if (L.openNodes.contains(node.getCorrespondingNode(node, nodes).number)){
-				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, nodes).number));
+			if (L.openNodes.contains(node.getCorrespondingNode(node, L2.vehicle.nodes).number)){
+				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, L2.vehicle.nodes).number));
 			}
 			
 			// Removing the weight corresponding to a delivery node when the delivery node is visited
@@ -552,7 +553,7 @@ public class PathBuilder {
 			}
 			
 			// Calculating the profit (revenue - costs) when a pickup node is visited 
-			L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, nodes)))
+			L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, L2.vehicle.nodes)))
 							- inputdata.fuelPrice*inputdata.fuelConsumptionEmptyTruckPerKm*inputdata.getDistance(L.node,node)
 							- inputdata.fuelPrice*inputdata.fuelConsumptionPerTonKm*L.weightCapacityUsed*inputdata.getDistance(L.node,node)
 							- inputdata.otherDistanceDependentCostsPerKm * inputdata.getDistance(L.node, node)
@@ -602,8 +603,8 @@ public class PathBuilder {
 			}
 			
 			// Remove the node's corresponding pickup node from the open nodes list when the delivery node i visited
-			if (L.openNodes.contains(node.getCorrespondingNode(node, nodes).number)){
-				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, nodes).number));
+			if (L.openNodes.contains(node.getCorrespondingNode(node, L2.vehicle.nodes).number)){
+				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, L2.vehicle.nodes).number));
 			}
 			
 			// Removing the weight corresponding to a delivery node when the delivery node is visited
@@ -856,7 +857,7 @@ public class PathBuilder {
 			}
 			
 			// Calculating the profit (revenue - costs) when a pickup node is visited 
-				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, nodes)))
+				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, L2.vehicle.nodes)))
 							- inputdata.fuelPrice*inputdata.fuelConsumptionEmptyTruckPerKm*inputdata.getDistance(L.node,node)
 							- inputdata.fuelPrice*inputdata.fuelConsumptionPerTonKm*L.weightCapacityUsed*inputdata.getDistance(L.node,node)
 							- inputdata.otherDistanceDependentCostsPerKm * inputdata.getDistance(L.node, node)
@@ -905,8 +906,8 @@ public class PathBuilder {
 			}
 		
 			// Remove the node's corresponding pickup node from the open nodes list when the delivery node i visited
-			if (L.openNodes.contains(node.getCorrespondingNode(node, nodes).number)){
-				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, nodes).number));
+			if (L.openNodes.contains(node.getCorrespondingNode(node, L2.vehicle.nodes).number)){
+				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, L2.vehicle.nodes).number));
 			}
 			
 			// Removing the weight corresponding to a delivery node when the delivery node is visited
@@ -1172,7 +1173,7 @@ public class PathBuilder {
 			}
 			
 			// Calculating the profit (revenue - costs) when a pickup node is visited 
-				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, nodes)))
+				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, L2.vehicle.nodes)))
 							- inputdata.fuelPrice*inputdata.fuelConsumptionEmptyTruckPerKm*inputdata.getDistance(L.node,node)
 							- inputdata.fuelPrice*inputdata.fuelConsumptionPerTonKm*L.weightCapacityUsed*inputdata.getDistance(L.node,node)
 							- inputdata.otherDistanceDependentCostsPerKm * inputdata.getDistance(L.node, node)
@@ -1221,8 +1222,8 @@ public class PathBuilder {
 			}
 			
 			// Remove the node's corresponding pickup node from the open nodes list when the delivery node i visited
-			if (L.openNodes.contains(node.getCorrespondingNode(node, nodes).number)){
-				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, nodes).number));
+			if (L.openNodes.contains(node.getCorrespondingNode(node, L2.vehicle.nodes).number)){
+				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, L2.vehicle.nodes).number));
 			}
 			
 			// Removing the weight corresponding to a delivery node when the delivery node is visited
@@ -1501,7 +1502,7 @@ public class PathBuilder {
 			}
 			
 			// Calculating the profit (revenue - costs) when a pickup node is visited 
-				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, nodes)))
+				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, L2.vehicle.nodes)))
 							- inputdata.fuelPrice*inputdata.fuelConsumptionEmptyTruckPerKm*inputdata.getDistance(L.node,node)
 							- inputdata.fuelPrice*inputdata.fuelConsumptionPerTonKm*L.weightCapacityUsed*inputdata.getDistance(L.node,node)
 							- inputdata.otherDistanceDependentCostsPerKm * inputdata.getDistance(L.node, node)
@@ -1550,8 +1551,8 @@ public class PathBuilder {
 			}
 			
 			// Remove the node's corresponding pickup node from the open nodes list when the delivery node i visited
-			if (L.openNodes.contains(node.getCorrespondingNode(node, nodes).number)){
-				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, nodes).number));
+			if (L.openNodes.contains(node.getCorrespondingNode(node, L2.vehicle.nodes).number)){
+				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, L2.vehicle.nodes).number));
 			}
 			
 			// Removing the weight corresponding to a delivery node when the delivery node is visited
@@ -1841,7 +1842,7 @@ public class PathBuilder {
 			}
 			
 			// Calculating the profit (revenue - costs) when a pickup node is visited 
-				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, nodes)))
+				L2.profit = L.profit + (inputdata.revenue * node.weight * inputdata.getDistance(node, node.getCorrespondingNode(node, L2.vehicle.nodes)))
 							- inputdata.fuelPrice*inputdata.fuelConsumptionEmptyTruckPerKm*inputdata.getDistance(L.node,node)
 							- inputdata.fuelPrice*inputdata.fuelConsumptionPerTonKm*L.weightCapacityUsed*inputdata.getDistance(L.node,node)
 							- inputdata.otherDistanceDependentCostsPerKm * inputdata.getDistance(L.node, node)
@@ -1890,8 +1891,8 @@ public class PathBuilder {
 			}
 			
 			// Remove the node's corresponding pickup node from the open nodes list when the delivery node i visited
-			if (L.openNodes.contains(node.getCorrespondingNode(node, nodes).number)){
-				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, nodes).number));
+			if (L.openNodes.contains(node.getCorrespondingNode(node, L2.vehicle.nodes).number)){
+				L2.openNodes.remove(L.openNodes.indexOf(node.getCorrespondingNode(node, L2.vehicle.nodes).number));
 			}
 			
 			// Removing the weight corresponding to a delivery node when the delivery node is visited
@@ -1925,6 +1926,11 @@ public class PathBuilder {
 	
 	
 	public Vector<Label> BuildPaths(Vehicle vehicle, Float[] dualVisitedPickupsCon, Float[] dualOneVisitCon) {
+		preprocess = new Preprocessing(pickupNodes, deliveryNodes, vehicles, inputdata, nodesWithoutDepot, vehicle);
+		preprocess.unreachableNodeCombination();
+		preprocess.unreachableDeliveryNode();
+		preprocess.unreachableDeliveryPairs();
+		
 		// Creating the list of non-dominated labels
 		Vector<Label> list = new Vector<Label>();   
 		// Initializing label
@@ -1945,7 +1951,7 @@ public class PathBuilder {
 		L.startTimeIntermediateBreak = 0;
 		L.consecutiveDrivingTime = 0;
 		L.consecutiveWorkingTime = 0;
-		
+		System.out.println("HELLOBUILDPATH");
 	//	for(int k = 0; k < vehicles.size(); k++) {
 	//		System.out.println("Vehicle:" +vehicle.number);
 	//		System.out.println(dualOneVisitCon.get(k));
@@ -1958,7 +1964,7 @@ public class PathBuilder {
 		ArrayList<Vector<Label>> unprocessedAtNode = new ArrayList<Vector<Label>>();
 		ArrayList<Vector<Label>> processedAtNode = new ArrayList<Vector<Label>>();
 		// Adding nodes to the processed and unprocessed lists
-		for(int i = 0; i < nodes.size(); i++) {
+		for(int i = 0; i < L.vehicle.nodes.size(); i++) {
 			Vector<Label> processed = new Vector<Label>();
 			processedAtNode.add(i, processed);
 			Vector<Label> unprocessed = new Vector<Label>();
@@ -1992,7 +1998,7 @@ public class PathBuilder {
 					
 					// Run label extension without daily rest or intermediate break and check dominance
 					Label newLabel = LabelExtension(pickup, label, dualVisitedPickupsCon);
-				
+					System.out.println(newLabel);
 					if(newLabel!=null) {
 						if(checkdominance(newLabel, unprocessedQueue, unprocessedAtNode.get(newLabel.node.number), processedAtNode.get(newLabel.node.number))) {
 							unprocessedQueue.add(newLabel); 
@@ -2067,7 +2073,7 @@ public class PathBuilder {
 			// Going through all nodes in the open nodes set (visited pickup nodes), and get their corresponding delivery node
 			for(int i : label.openNodes) { 
 				
-				Node node = nodes.get(i+1); 
+				Node node = L.vehicle.nodes.get(i+1); 
 				float arcDrivingTime = inputdata.getTime(label.node, node);
 				float intermediateBreakTime = Float.parseFloat("0.75");
 				float maxDrivingTime = Float.parseFloat("4.5");
@@ -2080,7 +2086,7 @@ public class PathBuilder {
 				if (arcDrivingTime + dailyDrivingTime < maxDailyDrivingTime) {
 					
 					// Run label extension without daily rest or intermediate break and check dominance
-					Label newLabel = LabelExtension(nodes.get(i+1), label, dualVisitedPickupsCon);
+					Label newLabel = LabelExtension(L.vehicle.nodes.get(i+1), label, dualVisitedPickupsCon);
 					
 					if(newLabel!=null) {
 						if(checkdominance(newLabel, unprocessedQueue, unprocessedAtNode.get(newLabel.node.number), processedAtNode.get(newLabel.node.number))) {
@@ -2090,7 +2096,7 @@ public class PathBuilder {
 					}
 					
 					// Run label extension with intermediate break and check dominance
-					Label newLabel2 = LabelExtensionWithIntermediateBreak(nodes.get(i+1), label, dualVisitedPickupsCon);
+					Label newLabel2 = LabelExtensionWithIntermediateBreak(L.vehicle.nodes.get(i+1), label, dualVisitedPickupsCon);
 					
 					if(newLabel2!=null) {
 						if(checkdominance(newLabel2, unprocessedQueue, unprocessedAtNode.get(newLabel2.node.number), processedAtNode.get(newLabel2.node.number))) {
@@ -2100,7 +2106,7 @@ public class PathBuilder {
 					}
 					
 					// Run label extension without two intermediate breaks and check dominance
-					Label newLabel3 = LabelExtensionWithTwoIntermediateBreaks(nodes.get(i+1), label, dualVisitedPickupsCon);
+					Label newLabel3 = LabelExtensionWithTwoIntermediateBreaks(L.vehicle.nodes.get(i+1), label, dualVisitedPickupsCon);
 					
 					if(newLabel3!=null) {
 						if(checkdominance(newLabel3, unprocessedQueue, unprocessedAtNode.get(newLabel3.node.number), processedAtNode.get(newLabel3.node.number))) {
@@ -2112,7 +2118,7 @@ public class PathBuilder {
 				
 				
 				// Run label extension with daily rest and check dominance
-				Label newLabel4 = LabelExtensionWithDailyRest(nodes.get(i+1), label, dualVisitedPickupsCon);
+				Label newLabel4 = LabelExtensionWithDailyRest(L.vehicle.nodes.get(i+1), label, dualVisitedPickupsCon);
 				
 				if(newLabel4!=null) {
 					if(checkdominance(newLabel4, unprocessedQueue, unprocessedAtNode.get(newLabel4.node.number), processedAtNode.get(newLabel4.node.number))) {
@@ -2126,7 +2132,7 @@ public class PathBuilder {
 				if (waitingTime > 0 || arcDrivingTime > maxDrivingTime) {
 				
 					// Run label extension with intermediate break and then daily rest and check dominance
-					Label newLabel5 = LabelExtensionWithIntermediateBreakBeforeDailyRest(nodes.get(i+1), label, dualVisitedPickupsCon);
+					Label newLabel5 = LabelExtensionWithIntermediateBreakBeforeDailyRest(L.vehicle.nodes.get(i+1), label, dualVisitedPickupsCon);
 					
 					if(newLabel5!=null) {
 						if(checkdominance(newLabel5, unprocessedQueue, unprocessedAtNode.get(newLabel5.node.number), processedAtNode.get(newLabel5.node.number))) {
@@ -2136,7 +2142,7 @@ public class PathBuilder {
 					}
 					
 					// Run label extension with daily rest and then intermediate break and check dominance	
-					Label newLabel6 = LabelExtensionWithDailyRestBeforeIntermediateBreak(nodes.get(i+1), label, dualVisitedPickupsCon);
+					Label newLabel6 = LabelExtensionWithDailyRestBeforeIntermediateBreak(L.vehicle.nodes.get(i+1), label, dualVisitedPickupsCon);
 					
 					if(newLabel6!=null) {
 					//	System.out.println(newLabel3.toString());
@@ -2149,7 +2155,7 @@ public class PathBuilder {
 			}
 			
 			// Extending labels to the end depot
-			Node node = nodes.get(1);
+			Node node = L.vehicle.nodes.get(1);
 			float arcDrivingTime = inputdata.getTime(label.node, node);
 			float dailyDrivingTime = label.dailyDrivingTime;
 			int maxDailyDrivingTime = 9;
@@ -2158,7 +2164,7 @@ public class PathBuilder {
 			if (arcDrivingTime + dailyDrivingTime < maxDailyDrivingTime) {
 			
 				// Run label extension without daily rest or intermediate break and check dominance
-				Label newLabel = LabelExtension(nodes.get(1), label, dualVisitedPickupsCon); 
+				Label newLabel = LabelExtension(L.vehicle.nodes.get(1), label, dualVisitedPickupsCon); 
 				
 				if(newLabel!=null) {
 					if(checkdominance(newLabel, unprocessedQueue, unprocessedAtNode.get(newLabel.node.number), processedAtNode.get(newLabel.node.number))) {
@@ -2167,7 +2173,7 @@ public class PathBuilder {
 				}
 				
 				// Run label extension with intermediate break and check dominance
-				Label newLabel2 = LabelExtensionWithIntermediateBreak(nodes.get(1), label, dualVisitedPickupsCon);
+				Label newLabel2 = LabelExtensionWithIntermediateBreak(L.vehicle.nodes.get(1), label, dualVisitedPickupsCon);
 				
 				if(newLabel2!=null) {
 					if(checkdominance(newLabel2, unprocessedQueue, unprocessedAtNode.get(newLabel2.node.number), processedAtNode.get(newLabel2.node.number))) {
@@ -2176,7 +2182,7 @@ public class PathBuilder {
 				}
 				
 				// Run label extension with two intermediate breaks and check dominance
-				Label newLabel3 = LabelExtensionWithTwoIntermediateBreaks(nodes.get(1), label, dualVisitedPickupsCon);
+				Label newLabel3 = LabelExtensionWithTwoIntermediateBreaks(L.vehicle.nodes.get(1), label, dualVisitedPickupsCon);
 				
 				if(newLabel3!=null) {
 					if(checkdominance(newLabel3, unprocessedQueue, unprocessedAtNode.get(newLabel3.node.number), processedAtNode.get(newLabel3.node.number))) {
@@ -2186,7 +2192,7 @@ public class PathBuilder {
 			}
 			
 			// Run label extension with daily rest and check dominance
-			Label newLabel4 = LabelExtensionWithDailyRest(nodes.get(1), label, dualVisitedPickupsCon);
+			Label newLabel4 = LabelExtensionWithDailyRest(L.vehicle.nodes.get(1), label, dualVisitedPickupsCon);
 			
 			if(newLabel4!=null) {
 				if(checkdominance(newLabel4, unprocessedQueue, unprocessedAtNode.get(newLabel4.node.number), processedAtNode.get(newLabel4.node.number))) {
@@ -2204,7 +2210,7 @@ public class PathBuilder {
 			if (waitingTime > 0 || arcDrivingTime > maxDrivingTime) {
 			
 				// Run label extension with intermediate break and then daily rest and check dominance
-				Label newLabel5 = LabelExtensionWithIntermediateBreakBeforeDailyRest(nodes.get(1), label, dualVisitedPickupsCon);
+				Label newLabel5 = LabelExtensionWithIntermediateBreakBeforeDailyRest(L.vehicle.nodes.get(1), label, dualVisitedPickupsCon);
 				
 				if(newLabel5!=null) {
 					//System.out.println(newLabel3.toString());
@@ -2214,7 +2220,7 @@ public class PathBuilder {
 				}
 				
 				// Run label extension with daily rest and then intermediate break and check dominance	
-				Label newLabel6 = LabelExtensionWithDailyRestBeforeIntermediateBreak(nodes.get(1), label, dualVisitedPickupsCon);
+				Label newLabel6 = LabelExtensionWithDailyRestBeforeIntermediateBreak(L.vehicle.nodes.get(1), label, dualVisitedPickupsCon);
 				
 				if(newLabel6!=null) {
 					//System.out.println(newLabel3.toString());

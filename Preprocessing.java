@@ -4,39 +4,52 @@ import java.util.Vector;
 
 public class Preprocessing {
 	
-	public Vector<Node> nodes;
+//	public Vector<Node> nodes;
 	public Vector<Node> pickupNodes;
 	public Vector<Node> deliveryNodes;
+	//public Vector<Node> nodesWithoutDepot;
 	public Vector<Node> depot;
 	public InstanceData inputdata;
 	public ArrayList<float[]> unreachableNodesFromNode;
 	public ArrayList<float[]> unreachableDelNodesFromNode;
 	public Hashtable<String, Float> unreachableDelPairs;
+	public Vector<Vehicle> vehicles;
+	public Vector<Node> nodes;
 	// public static ArrayList<Hashtable<Integer, Boolean>> feasibilityTest; 
 	
-	public Preprocessing(Vector<Node> pickupNodes, Vector<Node> deliveryNodes, Vector<Node> nodes, Vector<Node> depot, InstanceData inputdata) {
+	public Preprocessing(Vector<Node> pickupNodes, Vector<Node> deliveryNodes, Vector<Vehicle> vehicles, InstanceData inputdata, Vector<Node> nodesWithoutDepot, Vehicle vehicle) {
 		this.pickupNodes = pickupNodes;
-		this.nodes = nodes;
+	//	this.nodes = nodes;
 		this.deliveryNodes = deliveryNodes;
 		this.depot = depot;
 		this.inputdata = inputdata;
-		
+	//	this.nodesWithoutDepot = nodesWithoutDepot;
+		nodes = vehicle.nodes;
+	//	for(int i=0; i < vehicle.nodes.size(); i++) {
+	//		System.out.println(vehicle.nodes.get(i).location);
+	//	}
 	}
 	
 	
 	public void unreachableNodeCombination() {
+	//	for(Vehicle k : vehicles) {
 		this.unreachableNodesFromNode = new ArrayList<float[]>();
 		for(int i = 0; i < nodes.size();i++) {
 			unreachableNodesFromNode.add(new float[nodes.size()]);
 		}
+	//}
 		
 		
 		for(Node pickup : pickupNodes) {
 			for(Node pickup2 : pickupNodes) {
 				if(pickup!=pickup2) {
+				//	System.out.println(pickup.location);
+				//	System.out.println(pickup2.location);
 //					System.out.println("checking for node "+pickup.number+" and "+pickup2.number);
 					Node delivery2 = nodes.get(pickup2.number+1);
 					Node delivery = nodes.get(pickup.number+1);
+			//		System.out.println(delivery.location);
+				//	System.out.println(delivery2.location);
 					float time = pickup2.lateTimeWindow-(pickup.weight*inputdata.timeTonService)-
 							inputdata.getTime(pickup, pickup2); // Checking if the time for traveling from pickup 1 to another pickup 2 is so large that the time window in pickup 2 will be violated
 					float time2= delivery2.lateTimeWindow-pickup2.weight *inputdata.timeTonService-inputdata.getTime(pickup2, delivery2)-
@@ -105,10 +118,12 @@ public class Preprocessing {
 	
 	
 	public void unreachableDeliveryNode() {
+	//	for(Vehicle k : vehicles) {
 		this.unreachableDelNodesFromNode = new ArrayList<float[]>();
 		for(int i = 0; i < nodes.size();i++) {
 			unreachableDelNodesFromNode.add(new float[nodes.size()]);
-		}
+	//	}
+	}
 		
 		
 		for(Node delivery : deliveryNodes) {
@@ -180,7 +195,7 @@ public class Preprocessing {
 		for(Node node : nodes) {
 		for(Node delivery : deliveryNodes) {
 			for(Node delivery2 : deliveryNodes) {
-				if(delivery!=delivery2 && delivery!=node && delivery2!=node && delivery.number <delivery2.number) {
+				if(delivery!=delivery2 && delivery!=node && delivery2!=node && delivery.number <delivery2.number ) {
 					
 					
 //					System.out.println("checking for node "+pickup.number+" and "+pickup2.number);
