@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		long startTime = System.nanoTime();
 		
-		String datafile = "13P5R2V_java.txt";
+		String datafile = "10P5R2V_java.txt";
 		
 		File file = new File ("8P5R1V_java_results.txt");
 		

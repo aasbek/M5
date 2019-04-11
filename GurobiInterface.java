@@ -57,10 +57,12 @@ import gurobi.*;
 		public GRBColumn col2;
 		
 		public GurobiInterface(InstanceData inputdata, Vector<Node> nodes, Vector<Node> depot, Vector<Node> deliveryNodes, Vector<Node> pickupNodes, Vector<Vehicle> vehicles, Vector<Float> dualVisitedPickupsCon, Vector<Float> dualOneVisitCon, PrintWriter pw) throws Exception {
-			 env.set(GRB.IntParam.Presolve, 0);
-				env.set(GRB.DoubleParam.OptimalityTol, 0.000000001);
-				env.set(GRB.DoubleParam.FeasibilityTol, 0.000000001);
-			     model = new GRBModel(env);
+			env.set(GRB.IntParam.Presolve, 0);
+			env.set(GRB.DoubleParam.OptimalityTol, 0.000000001);
+			env.set(GRB.DoubleParam.FeasibilityTol, 0.000000001);
+			
+			model = new GRBModel(env);
+			
 			this.vehicles = vehicles; 
 			//this.builder = new PathBuilder(pickupNodes, deliveryNodes, nodes, depot, inputdata, pw, vehicles);
 			//this.path = route.path;
@@ -92,10 +94,15 @@ import gurobi.*;
 			
 		
 			
-			this.col = new GRBColumn();
+		//	this.col = new GRBColumn();
 			
+			//Label firstLabel = new Label();
+			//firstLabel.profit = 0;
+			Node firstNode = new Node(0);
 			Label firstLabel = new Label();
 			firstLabel.profit = 0;
+			//firstLabel.path.add(firstNode);
+		
 		
 			
 //			this.visitedPickupsByVehicleOnRoute = new int[100][vehicles.size()][pickupNodes.size()];
@@ -107,6 +114,7 @@ import gurobi.*;
 			for(int k = 0; k < vehicles.size(); k++) {
 				this.lambdaVars[k] = new ArrayList<GRBVar>();
 				this.vehicles.get(k).vehicleRoutes = new Vector<Integer>();
+				
 				numberOfRoutes += 1;
 				//System.out.println(vehicles.get(k).startDepot.number);
 				//System.out.println(vehicles.get(k).vehicleRoutes);
@@ -115,12 +123,14 @@ import gurobi.*;
 			//		System.out.println(numberOfRoutes);
 					GRBVar temp = model.addVar(0, GRB.INFINITY, firstLabel.profit, GRB.CONTINUOUS, col, "lambda_"+k+""+r);
 					this.lambdaVars[k].add(temp);
+					
+					pathList.put(numberOfRoutes-1, firstLabel);
 					this.objective.addTerm(firstLabel.profit, temp);
 //					for(int k = 0; k < vehicles.size(); k++) {
 						GRBLinExpr temp2 = new GRBLinExpr();
 						temp2.addTerm(1, temp);
 						this.oneVisitCon[k] = model.addConstr(temp2, GRB.EQUAL, 1, "oneVisitCon"+k);		// skal egentlig være Equal 
-					
+				
 				}
 			}
 			model.setObjective(objective, GRB.MAXIMIZE);
@@ -164,9 +174,9 @@ import gurobi.*;
 		
 		public void addRoute(Label l) throws Exception{
 			
-			col2 = new GRBColumn();
+			//col2 = new GRBColumn();
 			
-			GRBVar tempVar = model.addVar(0, GRB.INFINITY, l.profit, GRB.CONTINUOUS,  "lambda_"+l.vehicle.number+ numberOfRoutes);
+			GRBVar tempVar = model.addVar(0, GRB.INFINITY, l.profit, GRB.CONTINUOUS,  "lambda_"+l.vehicle.number+numberOfRoutes);
 			lambdaVars[l.vehicle.number].add(tempVar);
 			this.objective.addTerm(l.profit, tempVar);
 			
@@ -183,7 +193,7 @@ import gurobi.*;
 				model.chgCoeff(oneVisitCon[l.vehicle.number], tempVar, 1);
 				System.out.println("Variables"+variables.size());
 				
-				numberOfRoutes += 1;
+			//	numberOfRoutes += 1;
 				pathList.put(numberOfRoutes-1, l);
 				
 				
@@ -250,7 +260,7 @@ import gurobi.*;
 				if(bestLabel!=null) {
 				
 					System.out.println("red cost " +bestLabel.reducedCost);
-				//	numberOfRoutes += 1;
+					numberOfRoutes += 1;
 					vehicles.get(k).vehicleRoutes.add(numberOfRoutes);
 					System.out.println ("HER: " +numberOfRoutes);
 					addRoute(bestLabel);
@@ -283,13 +293,24 @@ import gurobi.*;
 
 				}
 			model.update();
-				
+			
 			for(int k = 0; k < vehicles.size(); k++) {
+				counter = 0;	
 				for (GRBVar var : lambdaVars[k]) {
-					if(var.get(GRB.DoubleAttr.X)>0.01) {
+					counter ++;
+					if(var.get(GRB.DoubleAttr.X)>=0.01) {
 						System.out.println(var.get(GRB.StringAttr.VarName)  + " " +var.get(GRB.DoubleAttr.X));
+						
 				//		int route = lambdaVars[k][r]
-				//			System.out.println(pathList.get(numberOfRoutes).path);
+						//int route = 2;
+						System.out.println(pathList.get(counter).profit);
+						if(counter>2) {
+						for(int i = 0; i < pathList.get(numberOfRoutes-1).path.size(); i++) {
+							//int route = 2;
+						
+						System.out.println(pathList.get(counter).path.get(i).number);
+						//route ++;
+						}}
 						
 				
 					}
